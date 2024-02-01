@@ -91,29 +91,37 @@ function SummaryResult() {
 function Main() {
   return (
     <div className="main">
-      <FilmList />
-      <FilmWatchedList />
+      <ListBox />
+      <WatchedBox />
+    </div>
+  );
+}
+
+function ListBox() {
+  const [isOpen, setIsOpen] = useState(true);
+
+  return (
+    <div className="box">
+      <button
+        className="btn-toggle"
+        onClick={() => setIsOpen((isOpen) => !isOpen)}
+      >
+        {isOpen ? "-" : "+"}
+      </button>
+      {isOpen && <FilmList />}
     </div>
   );
 }
 
 function FilmList() {
   const [movies, setMovies] = useState(tempMovieData);
-  const [isOpen, setIsOpen] = useState(false);
 
-  function handleOpen() {
-    setIsOpen(!isOpen);
-  }
   return (
-    <div className="box">
-      <button className="btn-toggle" onClick={handleOpen}>
-        {isOpen ? "-" : "+"}
-      </button>
-      <ul className="list">
-        {isOpen &&
-          movies.map((movie) => <Film key={movie.imdbID} movie={movie} />)}
-      </ul>
-    </div>
+    <ul className="list">
+      {movies.map((movie) => (
+        <Film key={movie.imdbID} movie={movie} />
+      ))}
+    </ul>
   );
 }
 function Film({ movie }) {
@@ -131,25 +139,30 @@ function Film({ movie }) {
   );
 }
 
-function FilmWatchedList() {
-  const [moviesWatched, setMoviesWatched] = useState(tempWatchedData);
-  const [isOpen2, setIsOpen2] = useState(false);
-
-  function handleOpen2() {
-    setIsOpen2(!isOpen2);
-  }
+function WatchedBox() {
+  const [isOpen2, setIsOpen2] = useState(true);
   return (
     <div className="box">
-      <button className="btn-toggle" onClick={handleOpen2}>
+      <button
+        className="btn-toggle"
+        onClick={() => setIsOpen2((isOpen2) => !isOpen2)}
+      >
         {isOpen2 ? "-" : "+"}
       </button>
-      <ul className="list">
-        {isOpen2 &&
-          moviesWatched.map((movie) => (
-            <FilmWatched key={movie.imdbID} movie={movie} />
-          ))}
-      </ul>
+      {isOpen2 && <FilmWatchedList />}
     </div>
+  );
+}
+
+function FilmWatchedList() {
+  const [moviesWatched, setMoviesWatched] = useState(tempWatchedData);
+
+  return (
+    <ul className="list">
+      {moviesWatched.map((movie) => (
+        <FilmWatched key={movie.imdbID} movie={movie} />
+      ))}
+    </ul>
   );
 }
 
