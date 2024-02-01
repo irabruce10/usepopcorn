@@ -50,10 +50,10 @@ const tempWatchedData = [
 
 export default function App() {
   return (
-    <>
+    <div>
       <NavBar />
       <Main />
-    </>
+    </div>
   );
 }
 
@@ -98,14 +98,38 @@ function Main() {
 }
 
 function FilmList() {
+  const [movies, setMovies] = useState(tempMovieData);
+  const [isOpen, setIsOpen] = useState(false);
+
+  function handleOpen() {
+    setIsOpen(!isOpen);
+  }
   return (
     <div className="box">
-      <button className="btn-toggle">-</button>
+      <button className="btn-toggle" onClick={handleOpen}>
+        {isOpen ? "-" : "+"}
+      </button>
+      <ul className="list">
+        {movies.map((movie) => (
+          <Film key={movie.imdbID} movie={movie} />
+        ))}
+      </ul>
     </div>
   );
 }
-function Film() {
-  return <li></li>;
+function Film({ movie }) {
+  return (
+    <li className="">
+      <img src={movie.Poster} alt={movie.Title} />
+      <h3>{movie.Title}</h3>
+      <div>
+        <p>
+          <span>🗓</span>
+          <span>{movie.Year}</span>
+        </p>
+      </div>
+    </li>
+  );
 }
 
 function FilmWatched() {
