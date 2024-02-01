@@ -92,7 +92,7 @@ function Main() {
   return (
     <div className="main">
       <FilmList />
-      <FilmWatched />
+      <FilmWatchedList />
     </div>
   );
 }
@@ -110,9 +110,8 @@ function FilmList() {
         {isOpen ? "-" : "+"}
       </button>
       <ul className="list">
-        {movies.map((movie) => (
-          <Film key={movie.imdbID} movie={movie} />
-        ))}
+        {isOpen &&
+          movies.map((movie) => <Film key={movie.imdbID} movie={movie} />)}
       </ul>
     </div>
   );
@@ -132,10 +131,39 @@ function Film({ movie }) {
   );
 }
 
-function FilmWatched() {
+function FilmWatchedList() {
+  const [moviesWatched, setMoviesWatched] = useState(tempWatchedData);
+  const [isOpen2, setIsOpen2] = useState(false);
+
+  function handleOpen2() {
+    setIsOpen2(!isOpen2);
+  }
   return (
     <div className="box">
-      <button className="btn-toggle">-</button>
+      <button className="btn-toggle" onClick={handleOpen2}>
+        {isOpen2 ? "-" : "+"}
+      </button>
+      <ul className="list">
+        {isOpen2 &&
+          moviesWatched.map((movie) => (
+            <FilmWatched key={movie.imdbID} movie={movie} />
+          ))}
+      </ul>
     </div>
+  );
+}
+
+function FilmWatched({ movie }) {
+  return (
+    <li className="">
+      <img src={movie.Poster} alt={movie.Title} />
+      <h3>{movie.Title}</h3>
+      <div>
+        <p>
+          <span>🗓</span>
+          <span>{movie.Year}</span>
+        </p>
+      </div>
+    </li>
   );
 }
