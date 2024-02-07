@@ -6,5 +6,10 @@ import StartRating from "./StartRating";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>{/* <App /> */ <StartRating />}</React.StrictMode>
+  <React.StrictMode>
+    {/* <App /> */}
+    <StartRating maxRating={5} />
+    <StartRating maxRating={10} />
+    <StartRating />
+  </React.StrictMode>
 );
