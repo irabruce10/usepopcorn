@@ -51,16 +51,24 @@ const tempWatchedData = [
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [moviesWatched, setMoviesWatched] = useState(tempWatchedData);
+  const [selectMovie, setSelectMovie] = useState([]);
+
+  function handleDetails(movie) {
+    setSelectMovie((movie) => [...movie, movie]);
+    console.log(movie);
+  }
   return (
     <div>
       <NavBar>
         <Search />
         <SummaryResult movies={movies} />
       </NavBar>
+
       <Main>
         <Box>
-          <FilmList movies={movies} />
+          <FilmList movies={movies} onDetails={handleDetails} />
         </Box>
+
         <Box>
           <FilmWatchedList moviesWatched={moviesWatched} />
         </Box>
@@ -133,18 +141,18 @@ function Box({ children }) {
 //   );
 // }
 
-function FilmList({ movies }) {
+function FilmList({ movies, onDetails }) {
   return (
     <ul className="list">
       {movies.map((movie) => (
-        <Film key={movie.imdbID} movie={movie} />
+        <Film key={movie.imdbID} movie={movie} onDetails={onDetails} />
       ))}
     </ul>
   );
 }
-function Film({ movie }) {
+function Film({ movie, onDetails }) {
   return (
-    <li className="">
+    <li className="" onClick={() => onDetails(movie)}>
       <img src={movie.Poster} alt={movie.Title} />
       <h3>{movie.Title}</h3>
       <div>
