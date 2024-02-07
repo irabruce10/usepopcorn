@@ -179,8 +179,8 @@ function FilmWatchedList({ moviesWatched, onSelect }) {
 function FilmWatched({ movie, onSelect }) {
   return (
     <li className="">
-      <img src={onSelect.Poster} alt={onSelect.Title} />
-      <h3>{onSelect.Title}</h3>
+      <img src={movie.Poster} alt={movie.Title} />
+      <h3>{movie.Title}</h3>
       <div>
         <p>
           <span>🗓</span>
