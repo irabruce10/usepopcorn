@@ -51,11 +51,11 @@ const tempWatchedData = [
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [moviesWatched, setMoviesWatched] = useState(tempWatchedData);
-  const [selectMovie, setSelectMovie] = useState([]);
+  const [selectMovie, setSelectMovie] = useState(null);
 
   function handleDetails(movie) {
-    setSelectMovie((movie) => [...movie, movie]);
-    console.log(movie);
+    setSelectMovie(movie);
+    console.log(movie, selectMovie);
   }
   return (
     <div>
@@ -70,7 +70,10 @@ export default function App() {
         </Box>
 
         <Box>
-          <FilmWatchedList moviesWatched={moviesWatched} />
+          <FilmWatchedList
+            moviesWatched={moviesWatched}
+            onSelect={selectMovie}
+          />
         </Box>
       </Main>
     </div>
@@ -133,9 +136,7 @@ function Box({ children }) {
 //       <button
 //         className="btn-toggle"
 //         onClick={() => setIsOpen2((isOpen2) => !isOpen2)}
-//       >
-//         {isOpen2 ? "-" : "+"}
-//       </button>
+//       >imdbID
 //       {isOpen2 && <FilmWatchedList />}
 //     </div>
 //   );
@@ -165,21 +166,21 @@ function Film({ movie, onDetails }) {
   );
 }
 
-function FilmWatchedList({ moviesWatched }) {
+function FilmWatchedList({ moviesWatched, onSelect }) {
   return (
     <ul className="list">
       {moviesWatched.map((movie) => (
-        <FilmWatched key={movie.imdbID} movie={movie} />
+        <FilmWatched key={movie.imdbID} movie={movie} onSelect={onSelect} />
       ))}
     </ul>
   );
 }
 
-function FilmWatched({ movie }) {
+function FilmWatched({ movie, onSelect }) {
   return (
     <li className="">
-      <img src={movie.Poster} alt={movie.Title} />
-      <h3>{movie.Title}</h3>
+      <img src={onSelect.Poster} alt={onSelect.Title} />
+      <h3>{onSelect.Title}</h3>
       <div>
         <p>
           <span>🗓</span>
