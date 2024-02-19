@@ -56,6 +56,7 @@ export default function App() {
   function handleDetails(movie) {
     const currentEl = selectMovie.find((el) => el.id === movie.id);
     console.log("k");
+
     if (currentEl) {
       setSelectMovie(
         selectMovie.map((el) =>
@@ -63,7 +64,7 @@ export default function App() {
         )
       );
     } else {
-      setSelectMovie([...selectMovie, { ...movie, qty: +1 }]);
+      setSelectMovie([...selectMovie, { ...movie, qty: 1 }]);
     }
   }
   return (
@@ -186,10 +187,6 @@ function FilmWatchedList({ moviesWatched, onSelect }) {
       {onSelect.map((movie) => (
         <FilmWatched key={movie.imdbID} movie={movie} />
       ))}
-
-      {/* {onSelect.map((movie) => (
-        <FilmWatched movie={movie} key={movie.imdbID} />
-      ))} */}
     </ul>
   );
 }
