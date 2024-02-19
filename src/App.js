@@ -51,11 +51,20 @@ const tempWatchedData = [
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [moviesWatched, setMoviesWatched] = useState(tempWatchedData);
-  const [selectMovie, setSelectMovie] = useState(null);
+  const [selectMovie, setSelectMovie] = useState([]);
 
   function handleDetails(movie) {
-    setSelectMovie(movie);
-    console.log(movie, selectMovie);
+    const currentEl = selectMovie.find((el) => el.id === movie.id);
+    console.log("k");
+    if (currentEl) {
+      setSelectMovie(
+        selectMovie.map((el) =>
+          el.id === movie.id ? { ...currentEl, qty: currentEl.qty + 1 } : el
+        )
+      );
+    } else {
+      setSelectMovie([...selectMovie, { ...movie, qty: +1 }]);
+    }
   }
   return (
     <div>
@@ -153,13 +162,14 @@ function FilmList({ movies, onDetails }) {
 }
 function Film({ movie, onDetails }) {
   return (
-    <li className="" onClick={() => onDetails(movie)}>
+    <li className="">
       <img src={movie.Poster} alt={movie.Title} />
       <h3>{movie.Title}</h3>
       <div>
         <p>
           <span>🗓</span>
           <span>{movie.Year}</span>
+          <button onClick={() => onDetails(movie)}>add to cart</button>
         </p>
       </div>
     </li>
@@ -169,16 +179,24 @@ function Film({ movie, onDetails }) {
 function FilmWatchedList({ moviesWatched, onSelect }) {
   return (
     <ul className="list">
-      {moviesWatched.map((movie) => (
+      {/* {moviesWatched.map((movie) => (
         <FilmWatched key={movie.imdbID} movie={movie} onSelect={onSelect} />
+      ))} */}
+
+      {onSelect.map((movie) => (
+        <FilmWatched key={movie.imdbID} movie={movie} />
       ))}
+
+      {/* {onSelect.map((movie) => (
+        <FilmWatched movie={movie} key={movie.imdbID} />
+      ))} */}
     </ul>
   );
 }
 
-function FilmWatched({ movie, onSelect }) {
+function FilmWatched({ movie }) {
   return (
-    <li className="">
+    <li>
       <img src={movie.Poster} alt={movie.Title} />
       <h3>{movie.Title}</h3>
       <div>
