@@ -6,8 +6,6 @@ const containerStyle = {
 };
 const starContainerStyle = {
   display: "flex",
-  gap: "7px",
-  marginTop: "20px",
 };
 const textStyle = {
   lineHeigh: "1",
