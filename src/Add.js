@@ -8,7 +8,6 @@ const data = [
 export default function Add() {
   const [item, setItem] = useState(data);
   const [newItem, setNewItem] = useState("");
-  const [selected, setSelected] = useState([]);
   const [cart, setCart] = useState([]);
 
   function handleAdd() {
@@ -17,18 +16,17 @@ export default function Add() {
   }
 
   function handleSelect(items) {
-    const itemEx = item.find((it) => it.id === items.id);
+    const exit = cart.find((it) => it.id === items.id);
 
-    if (itemEx) {
+    if (exit) {
       setCart(
-        item.map((ite) =>
-          ite.id === items.id ? { ...itemEx, text: itemEx.text } : ite
+        cart.map((x) =>
+          x.id === items.id ? { ...exit, qty: exit.qty + 1 } : x
         )
       );
+    } else {
+      setCart([...cart, { ...items, qty: 1 }]);
     }
-
-    console.log(itemEx);
-    console.log(cart);
   }
 
   return (
@@ -55,7 +53,7 @@ function ItemList({ handleAdd, item, newItem, setNewItem, handleSelect }) {
       </div>
       <ul>
         {item.map((itm) => (
-          <Item key={itm.text} item={itm} handleSelect={handleSelect} />
+          <Item key={itm.id} item={itm} handleSelect={handleSelect} />
         ))}
       </ul>
     </div>
@@ -67,7 +65,7 @@ function Item({ item, handleSelect }) {
     <li>
       <div>
         <p>{item.text}</p>
-        <button onClick={() => handleSelect(item)}>Add</button>
+        <button onClick={() => handleSelect(item)}>Add to cart</button>
       </div>
     </li>
   );
@@ -75,12 +73,12 @@ function Item({ item, handleSelect }) {
 
 function CartItm({ cart }) {
   return (
-    <li>
+    <div>
       {cart.map((c) => (
-        <li key={c.id}>
+        <div key={c.id}>
           <p>{c.text}</p>
-        </li>
+        </div>
       ))}
-    </li>
+    </div>
   );
 }
