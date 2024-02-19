@@ -12,7 +12,10 @@ export default function Add() {
 
   function handleAdd() {
     console.log("item");
-    setItem([...item, { text: newItem }]);
+    setItem([
+      ...item,
+      { text: newItem, id: new Date().getTime().toString(36) },
+    ]);
   }
 
   function handleSelect(items) {
