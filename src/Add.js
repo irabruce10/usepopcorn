@@ -7,21 +7,27 @@ export default function Add() {
   const [newItem, setNewItem] = useState("");
 
   function handleAdd() {
-    console.log("ke");
+    console.log("item");
+    setItem([...item, { text: newItem }]);
   }
 
   return (
     <div>
-      <ItemList item={item} handleAdd={handleAdd} />
+      <ItemList
+        item={item}
+        newItem={newItem}
+        setNewItem={setNewItem}
+        handleAdd={handleAdd}
+      />
     </div>
   );
 }
 
-function ItemList({ item, handleAdd }) {
+function ItemList({ handleAdd, item, newItem, setNewItem }) {
   return (
     <div>
       <div>
-        <input />
+        <input onChange={(e) => setNewItem(e.target.value)} value={newItem} />
         <button onClick={handleAdd}>Add</button>
       </div>
       <ul>
