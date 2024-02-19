@@ -42,7 +42,10 @@ function ItemList({ handleAdd, item, newItem, setNewItem }) {
 function Item({ item }) {
   return (
     <li>
-      <p>{item.text}</p>
+      <div>
+        <p>{item.text}</p>
+        <button>Add</button>
+      </div>
     </li>
   );
 }
