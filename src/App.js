@@ -51,22 +51,21 @@ const tempWatchedData = [
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [moviesWatched, setMoviesWatched] = useState(tempWatchedData);
-  const [selectMovie, setSelectMovie] = useState([]);
+  // const [selectMovie, setSelectMovie] = useState([]);
 
-  function handleDetails(movie) {
-    const currentEl = selectMovie.find((el) => el.id === movie.id);
-    console.log("k");
+  // function handleDetails(movie) {
+  //   const currentEl = selectMovie.find((el) => el.id === movie.id);
 
-    if (currentEl) {
-      setSelectMovie(
-        selectMovie.map((el) =>
-          el.id === movie.id ? { ...currentEl, qty: currentEl.qty + 1 } : el
-        )
-      );
-    } else {
-      setSelectMovie([...selectMovie, { ...movie, qty: 1 }]);
-    }
-  }
+  //   if (currentEl) {
+  //     setSelectMovie(
+  //       selectMovie.map((el) =>
+  //         el.id === movie.id ? { ...currentEl, qty: currentEl.qty + 1 } : el
+  //       )
+  //     );
+  //   } else {
+  //     setSelectMovie([...selectMovie, { ...movie, qty: 1 }]);
+  //   }
+  // }
   return (
     <div>
       <NavBar>
@@ -76,14 +75,11 @@ export default function App() {
 
       <Main>
         <Box>
-          <FilmList movies={movies} onDetails={handleDetails} />
+          <FilmList movies={movies} />
         </Box>
 
         <Box>
-          <FilmWatchedList
-            moviesWatched={moviesWatched}
-            onSelect={selectMovie}
-          />
+          <FilmWatchedList moviesWatched={moviesWatched} />
         </Box>
       </Main>
     </div>
@@ -146,7 +142,7 @@ function Box({ children }) {
 //       <button
 //         className="btn-toggle"
 //         onClick={() => setIsOpen2((isOpen2) => !isOpen2)}
-//       >imdbID
+//       ></button>
 //       {isOpen2 && <FilmWatchedList />}
 //     </div>
 //   );
@@ -170,7 +166,7 @@ function Film({ movie, onDetails }) {
         <p>
           <span>🗓</span>
           <span>{movie.Year}</span>
-          <button onClick={() => onDetails(movie)}>add to cart</button>
+          {/* <button onClick={() => onDetails(movie)}>add to cart</button> */}
         </p>
       </div>
     </li>
@@ -180,13 +176,13 @@ function Film({ movie, onDetails }) {
 function FilmWatchedList({ moviesWatched, onSelect }) {
   return (
     <ul className="list">
-      {/* {moviesWatched.map((movie) => (
+      {moviesWatched.map((movie) => (
         <FilmWatched key={movie.imdbID} movie={movie} onSelect={onSelect} />
-      ))} */}
-
-      {onSelect.map((movie) => (
-        <FilmWatched key={movie.imdbID} movie={movie} />
       ))}
+
+      {/* {onSelect.map((movie) => (
+        <FilmWatched key={movie.imdbID} movie={movie} />
+      ))} */}
     </ul>
   );
 }
