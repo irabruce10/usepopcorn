@@ -51,11 +51,13 @@ const tempWatchedData = [
 const KEY = "6b56d598";
 
 export default function App() {
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [moviesWatched, setMoviesWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const query = "fast";
+
+  const squery = "fast";
   // function handleDetails(movie) {
   //   const currentEl = selectMovie.find((el) => el.id === movie.id);
 
@@ -73,11 +75,17 @@ export default function App() {
   // console.log(setMovies, setMoviesWatched);
 
   useEffect(function () {
+    console.log("a");
+  }, []);
+
+  console.log("c");
+
+  useEffect(function () {
     async function rend() {
       try {
         setIsLoading(true);
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+          `http://www.omdbapi.com/?apikey=${KEY}&s=${squery}`
         );
 
         if (!res.ok)
@@ -101,7 +109,7 @@ export default function App() {
   return (
     <div>
       <NavBar>
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <SummaryResult movies={movies} />
       </NavBar>
 
@@ -152,11 +160,15 @@ function Logo() {
   );
 }
 
-function Search() {
+function Search({ query, setQuery }) {
   return (
-    <>
-      <input className="search" type="search" placeholder="Search movies..." />
-    </>
+    <input
+      className="search"
+      type="search"
+      placeholder="Search movies..."
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+    />
   );
 }
 
