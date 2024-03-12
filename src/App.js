@@ -54,6 +54,7 @@ export default function App() {
   const [movies, setMovies] = useState([]);
   const [moviesWatched, setMoviesWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   // function handleDetails(movie) {
   //   const currentEl = selectMovie.find((el) => el.id === movie.id);
@@ -73,11 +74,20 @@ export default function App() {
 
   useEffect(function () {
     async function rend() {
-      setIsLoading(true);
-      const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=fast`);
-      const data = await res.json();
-      setMovies(data.Search);
-      setIsLoading(false);
+      try {
+        setIsLoading(true);
+        const res = await fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=fast`);
+
+        if (!res.ok)
+          throw new Error("Something went wrong with fetching movies ");
+
+        const data = await res.json();
+        setMovies(data.Search);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     rend();
@@ -103,6 +113,15 @@ export default function App() {
 
 function Loader() {
   return <p className="loader">Loading.....</p>;
+}
+
+function ErrorMessage({ message }) {
+  return (
+    <p className="error">
+      <span>-</span>
+      {message}
+    </p>
+  );
 }
 function NavBar({ children }) {
   return (
