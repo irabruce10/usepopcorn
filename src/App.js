@@ -57,7 +57,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const squery = "fast";
+  // const squery = "fast";
   // function handleDetails(movie) {
   //   const currentEl = selectMovie.find((el) => el.id === movie.id);
 
@@ -74,37 +74,35 @@ export default function App() {
 
   // console.log(setMovies, setMoviesWatched);
 
-  useEffect(function () {
-    console.log("a");
-  }, []);
+  useEffect(
+    function () {
+      async function rend() {
+        try {
+          setIsLoading(true);
+          setError("");
+          const res = await fetch(
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+          );
 
-  console.log("c");
+          if (!res.ok)
+            throw new Error("Something went wrong with fetching movies ");
 
-  useEffect(function () {
-    async function rend() {
-      try {
-        setIsLoading(true);
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${squery}`
-        );
+          const data = await res.json();
 
-        if (!res.ok)
-          throw new Error("Something went wrong with fetching movies ");
+          if (data.Response === "False") throw new Error("Movie Not Found...");
 
-        const data = await res.json();
-
-        if (data.Response === "False") throw new Error("Movie Not Found...");
-
-        setMovies(data.Search);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
+          setMovies(data.Search);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
       }
-    }
 
-    rend();
-  }, []);
+      rend();
+    },
+    [query]
+  );
 
   return (
     <div>
