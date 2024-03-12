@@ -55,9 +55,11 @@ export default function App() {
   const [movies, setMovies] = useState([]);
   const [moviesWatched, setMoviesWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectId, setSelectId] = useState(null);
   const [error, setError] = useState("");
 
-  // const squery = "fast";
+  //  const squery = "fast";
+
   // function handleDetails(movie) {
   //   const currentEl = selectMovie.find((el) => el.id === movie.id);
 
@@ -73,6 +75,10 @@ export default function App() {
   // }
 
   // console.log(setMovies, setMoviesWatched);
+
+  function handleSelectId(id) {
+    setSelectId(id);
+  }
 
   useEffect(
     function () {
@@ -121,13 +127,19 @@ export default function App() {
         <Box>
           {isLoading && <Loader />}
 
-          {!isLoading && !error && <FilmList movies={movies} />}
+          {!isLoading && !error && (
+            <FilmList movies={movies} onSelectMovie={handleSelectId} />
+          )}
 
           {error && <ErrorMessage message={error} />}
         </Box>
 
         <Box>
-          <FilmWatchedList moviesWatched={moviesWatched} />
+          {selectId ? (
+            <MovieDetails selectId={selectId} />
+          ) : (
+            <FilmWatchedList moviesWatched={moviesWatched} />
+          )}
         </Box>
       </Main>
     </div>
@@ -212,18 +224,23 @@ function Box({ children }) {
 //   );
 // }
 
-function FilmList({ movies, onDetails }) {
+function FilmList({ movies, onDetails, onSelectMovie }) {
   return (
     <ul className="list">
       {movies.map((movie) => (
-        <Film key={movie.imdbID} movie={movie} onDetails={onDetails} />
+        <Film
+          key={movie.imdbID}
+          movie={movie}
+          onDetails={onDetails}
+          onSelectMovie={onSelectMovie}
+        />
       ))}
     </ul>
   );
 }
-function Film({ movie, onDetails }) {
+function Film({ movie, onDetails, onSelectMovie }) {
   return (
-    <li className="">
+    <li onClick={() => onSelectMovie(movie.imdbID)}>
       <img src={movie.Poster} alt={movie.Title} />
       <h3>{movie.Title}</h3>
       <div>
@@ -249,6 +266,10 @@ function FilmWatchedList({ moviesWatched, onSelect }) {
       ))} */}
     </ul>
   );
+}
+
+function MovieDetails({ selectId, setSelectId }) {
+  return <p>{selectId}ldl</p>;
 }
 
 function FilmWatched({ movie }) {
