@@ -76,7 +76,7 @@ export default function App() {
 
   useEffect(
     function () {
-      async function rend() {
+      async function fetchMovies() {
         try {
           setIsLoading(true);
           setError("");
@@ -99,7 +99,13 @@ export default function App() {
         }
       }
 
-      rend();
+      if (query.length < 3) {
+        setMovies([]);
+        setError("");
+        return;
+      }
+
+      fetchMovies();
     },
     [query]
   );
