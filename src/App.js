@@ -84,6 +84,10 @@ export default function App() {
     setSelectId(null);
   }
 
+  function handAdd(movie) {
+    setMoviesWatched((movies) => [...movies, movie]);
+  }
+
   useEffect(
     function () {
       async function fetchMovies() {
@@ -140,7 +144,11 @@ export default function App() {
 
         <Box>
           {selectId ? (
-            <MovieDetails selectId={selectId} onCloseMovie={handleCloseMovie} />
+            <MovieDetails
+              selectId={selectId}
+              onCloseMovie={handleCloseMovie}
+              onAddMovie={handAdd}
+            />
           ) : (
             <FilmWatchedList moviesWatched={moviesWatched} />
           )}
@@ -272,7 +280,7 @@ function FilmWatchedList({ moviesWatched, onSelect }) {
   );
 }
 
-function MovieDetails({ selectId, onCloseMovie }) {
+function MovieDetails({ selectId, onCloseMovie, onAddMovie }) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -289,6 +297,18 @@ function MovieDetails({ selectId, onCloseMovie }) {
     Genre: genre,
   } = movie;
 
+  function addWatchMovie() {
+    const d = {
+      imdbID: selectId,
+      title,
+      year,
+      poster,
+      runtime,
+      plot,
+    };
+
+    onAddMovie(d);
+  }
   useEffect(
     function () {
       async function getMovieDetails() {
@@ -333,6 +353,10 @@ function MovieDetails({ selectId, onCloseMovie }) {
             <div className="rating">
               <>
                 <StarRating maxRating={10} size={24} />
+
+                <button className="" onClick={addWatchMovie}>
+                  + add to List
+                </button>
               </>
             </div>
             <p>
@@ -350,12 +374,12 @@ function MovieDetails({ selectId, onCloseMovie }) {
 function FilmWatched({ movie }) {
   return (
     <li>
-      <img src={movie.Poster} alt={movie.Title} />
-      <h3>{movie.Title}</h3>
+      <img src={movie.poster} alt={movie.title} />
+      <h3>{movie.title}</h3>
       <div>
         <p>
           <span>🗓</span>
-          <span>{movie.Year}</span>
+          <span>{movie.year}</span>
         </p>
       </div>
     </li>
