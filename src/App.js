@@ -363,7 +363,7 @@ function MovieDetails({ selectId, onCloseMovie, onAddMovie }) {
 
                 {userRating > 0 && (
                   <button className="btn-add" onClick={addWatchMovie}>
-                    + add to List
+                    + add to list
                   </button>
                 )}
               </>
