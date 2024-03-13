@@ -298,16 +298,17 @@ function MovieDetails({ selectId, onCloseMovie, onAddMovie }) {
   } = movie;
 
   function addWatchMovie() {
-    const d = {
+    const newWatchedMovie = {
       imdbID: selectId,
       title,
       year,
       poster,
-      runtime,
-      plot,
+      runtime: Number(runtime.split(" ").at(0)),
+      imdbRating: Number(imdbRating),
     };
 
-    onAddMovie(d);
+    onAddMovie(newWatchedMovie);
+    onCloseMovie();
   }
   useEffect(
     function () {
@@ -374,12 +375,20 @@ function MovieDetails({ selectId, onCloseMovie, onAddMovie }) {
 function FilmWatched({ movie }) {
   return (
     <li>
-      <img src={movie.poster} alt={movie.title} />
+      <img src={movie.poster} alt={`${movie.title} poster`} />
       <h3>{movie.title}</h3>
       <div>
         <p>
-          <span>🗓</span>
-          <span>{movie.year}</span>
+          <span>⭐️</span>
+          <span>{movie.imdbRating}</span>
+        </p>
+        <p>
+          <span>🌟</span>
+          <span>{movie.userRating}</span>
+        </p>
+        <p>
+          <span>⏳</span>
+          <span>{movie.runtime}</span>
         </p>
       </div>
     </li>
