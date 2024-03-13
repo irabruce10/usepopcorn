@@ -274,7 +274,7 @@ function FilmWatchedList({ moviesWatched, onSelect }) {
 
 function MovieDetails({ selectId, onCloseMovie }) {
   const [movie, setMovie] = useState({});
-  const [isLoading, setIsLoading] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     Title: title,
@@ -292,12 +292,14 @@ function MovieDetails({ selectId, onCloseMovie }) {
   useEffect(
     function () {
       async function getMovieDetails() {
+        setIsLoading(true);
         const res = await fetch(
           `http://www.omdbapi.com/?apikey=${KEY}&i=${selectId}`
         );
 
         const data = await res.json();
         setMovie(data);
+        setIsLoading(false);
       }
 
       getMovieDetails();
