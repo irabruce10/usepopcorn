@@ -77,12 +77,12 @@ export default function App() {
   // console.log(setMovies, setMoviesWatched);
 
   function handleSelectId(id) {
-    setSelectId(id);
+    setSelectId((selectId) => (id === selectId ? null : id));
   }
   function handleCloseMovie() {
     setSelectId(null);
   }
-  
+
   useEffect(
     function () {
       async function fetchMovies() {
