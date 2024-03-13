@@ -272,6 +272,22 @@ function FilmWatchedList({ moviesWatched, onSelect }) {
 }
 
 function MovieDetails({ selectId, onCloseMovie }) {
+  const 
+  useEffect(
+    function () {
+      async function getMovieDetails() {
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${KEY}&i=${selectId}`
+        );
+
+        const data = await res.json();
+        console.log(data);
+      }
+
+      getMovieDetails();
+    },
+    [selectId]
+  );
   return (
     <div className="details">
       <button className="btn-back" onClick={onCloseMovie}>
