@@ -283,6 +283,7 @@ function FilmWatchedList({ moviesWatched, onSelect }) {
 function MovieDetails({ selectId, onCloseMovie, onAddMovie }) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [userRating, setUserRating] = useState("");
 
   const {
     Title: title,
@@ -305,6 +306,7 @@ function MovieDetails({ selectId, onCloseMovie, onAddMovie }) {
       poster,
       runtime: Number(runtime.split(" ").at(0)),
       imdbRating: Number(imdbRating),
+      userRating,
     };
 
     onAddMovie(newWatchedMovie);
@@ -353,11 +355,17 @@ function MovieDetails({ selectId, onCloseMovie, onAddMovie }) {
           <section>
             <div className="rating">
               <>
-                <StarRating maxRating={10} size={24} />
+                <StarRating
+                  maxRating={10}
+                  size={24}
+                  onSetRating={setUserRating}
+                />
 
-                <button className="" onClick={addWatchMovie}>
-                  + add to List
-                </button>
+                {userRating > 0 && (
+                  <button className="btn-add" onClick={addWatchMovie}>
+                    + add to List
+                  </button>
+                )}
               </>
             </div>
             <p>
