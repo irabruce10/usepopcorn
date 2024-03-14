@@ -54,7 +54,7 @@ export default function App() {
   const [query, setQuery] = useState("fast");
   const [movies, setMovies] = useState([]);
   const [moviesWatched, setMoviesWatched] = useState([]);
-  const [selectId, setSelectId] = useState([]);
+  const [selectId, setSelectId] = useState(null);
 
   useEffect(
     function () {
