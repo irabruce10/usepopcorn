@@ -51,21 +51,26 @@ import "./index.css";
 const KEY = "6b56d598";
 
 export default function App() {
+  const [query, setQuery] = useState("fast");
   const [movies, setMovies] = useState([]);
   const [moviesWatched, setMoviesWatched] = useState([]);
-
-  const [query, setQuery] = useState("fast");
 
   useEffect(
     function () {
       async function m() {
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&t=${query}`
+          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
         );
 
         const data = await res.json();
+        setMovies(data.Search);
 
         console.log(data);
+      }
+
+      if (!query.length) {
+        setMovies([]);
+        return;
       }
 
       m();
@@ -76,7 +81,7 @@ export default function App() {
   return (
     <div>
       <NavBar>
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <SummaryResult movies={movies} />
       </NavBar>
 
@@ -111,8 +116,16 @@ function Logo() {
   );
 }
 
-function Search() {
-  return <input className="search" type="search" placeholder="movies" />;
+function Search({ setQuery, query }) {
+  return (
+    <input
+      className="search"
+      type="search"
+      placeholder="movies"
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+    />
+  );
 }
 
 function SummaryResult({ movies }) {
@@ -155,7 +168,7 @@ function FilmList({ movies, onDetails, onSelectMovie }) {
 }
 function Film({ movie, onDetails, onSelectMovie }) {
   return (
-    <li onClick={() => onSelectMovie(movie.imdbID)}>
+    <li>
       <img src={movie.Poster} alt={movie.Title} />
       <h3>{movie.Title}</h3>
       <div>
