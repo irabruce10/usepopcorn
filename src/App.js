@@ -88,6 +88,10 @@ export default function App() {
     setMoviesWatched((movies) => [...movies, movie]);
   }
 
+  function handleDeleteWatched(id) {
+    setMoviesWatched((cur) => cur.filter((mov) => mov.imdbID !== id));
+  }
+
   useEffect(
     function () {
       async function fetchMovies() {
@@ -151,7 +155,10 @@ export default function App() {
               watched={moviesWatched}
             />
           ) : (
-            <FilmWatchedList moviesWatched={moviesWatched} />
+            <FilmWatchedList
+              moviesWatched={moviesWatched}
+              onDelete={handleDeleteWatched}
+            />
           )}
         </Box>
       </Main>
@@ -267,11 +274,16 @@ function Film({ movie, onDetails, onSelectMovie }) {
   );
 }
 
-function FilmWatchedList({ moviesWatched, onSelect }) {
+function FilmWatchedList({ moviesWatched, onSelect, onDelete }) {
   return (
     <ul className="list">
       {moviesWatched.map((movie) => (
-        <FilmWatched key={movie.imdbID} movie={movie} onSelect={onSelect} />
+        <FilmWatched
+          key={movie.imdbID}
+          movie={movie}
+          onSelect={onSelect}
+          onDelete={onDelete}
+        />
       ))}
 
       {/* {onSelect.map((movie) => (
@@ -395,7 +407,7 @@ function MovieDetails({ selectId, onCloseMovie, onAddMovie, watched }) {
   );
 }
 
-function FilmWatched({ movie }) {
+function FilmWatched({ movie, onDelete }) {
   return (
     <li>
       <img src={movie.poster} alt={`${movie.title} poster`} />
@@ -413,6 +425,10 @@ function FilmWatched({ movie }) {
           <span>⏳</span>
           <span>{movie.runtime}</span>
         </p>
+
+        <button className="btn-delete" onClick={() => onDelete(movie.imdbID)}>
+          X
+        </button>
       </div>
     </li>
   );
