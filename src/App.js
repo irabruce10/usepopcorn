@@ -304,8 +304,6 @@ function MovieDetails({ selectId, onCloseMovie, onAddMovie, watched }) {
     (movie) => movie.imdbID === selectId
   )?.userRating;
 
-  console.log(isWatched);
-
   const {
     Title: title,
     Year: year,
@@ -349,6 +347,14 @@ function MovieDetails({ selectId, onCloseMovie, onAddMovie, watched }) {
       getMovieDetails();
     },
     [selectId]
+  );
+
+  useEffect(
+    function () {
+      if (!title) return;
+      document.title = `Movie | ${title}`;
+    },
+    [title]
   );
   return (
     <div className="details">
