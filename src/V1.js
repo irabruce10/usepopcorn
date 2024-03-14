@@ -54,6 +54,7 @@ export default function App() {
   const [query, setQuery] = useState("fast");
   const [movies, setMovies] = useState([]);
   const [moviesWatched, setMoviesWatched] = useState([]);
+  const [selectId, setSelectId] = useState([]);
 
   useEffect(
     function () {
@@ -78,6 +79,11 @@ export default function App() {
     [query]
   );
 
+  function handleSelectId(id) {
+    setSelectId((selectId) => (id === selectId.imdbID ? null : id));
+    
+  }
+
   return (
     <div>
       <NavBar>
@@ -87,10 +93,11 @@ export default function App() {
 
       <Main>
         <Box>
-          <FilmList movies={movies} />
+          <FilmList movies={movies} onSelectId={handleSelectId} />
         </Box>
 
         <Box>
+          <Details />
           <FilmWatchedList moviesWatched={moviesWatched} />
         </Box>
       </Main>
@@ -152,23 +159,18 @@ function Box({ children }) {
   );
 }
 
-function FilmList({ movies, onDetails, onSelectMovie }) {
+function FilmList({ movies, onSelectId }) {
   return (
     <ul className="list list-movies">
       {movies.map((movie) => (
-        <Film
-          key={movie.imdbID}
-          movie={movie}
-          onDetails={onDetails}
-          onSelectMovie={onSelectMovie}
-        />
+        <Film key={movie.imdbID} movie={movie} onSelectId={onSelectId} />
       ))}
     </ul>
   );
 }
-function Film({ movie, onDetails, onSelectMovie }) {
+function Film({ movie, onSelectId }) {
   return (
-    <li>
+    <li onClick={() => onSelectId(movie)}>
       <img src={movie.Poster} alt={movie.Title} />
       <h3>{movie.Title}</h3>
       <div>
@@ -179,6 +181,10 @@ function Film({ movie, onDetails, onSelectMovie }) {
       </div>
     </li>
   );
+}
+
+function Details() {
+  return <div className="detail">details</div>;
 }
 
 function FilmWatchedList({ moviesWatched, onSelect, onDelete }) {
