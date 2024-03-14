@@ -81,7 +81,6 @@ export default function App() {
 
   function handleSelectId(id) {
     setSelectId((selectId) => (id === selectId.imdbID ? null : id));
-    
   }
 
   return (
@@ -97,7 +96,7 @@ export default function App() {
         </Box>
 
         <Box>
-          <Details />
+          <Details selectId={selectId} />
           <FilmWatchedList moviesWatched={moviesWatched} />
         </Box>
       </Main>
@@ -183,8 +182,58 @@ function Film({ movie, onSelectId }) {
   );
 }
 
-function Details() {
-  return <div className="detail">details</div>;
+function Details({ selectId }) {
+  const [movie, setMovie] = useState({});
+
+  const {
+    Title: title,
+    Year: year,
+    Poster: poster,
+    Runtime: runtime,
+    imdbRating,
+    Plot: plot,
+    Released: released,
+    Actors: actors,
+    Director: director,
+    Genre: genre,
+  } = movie;
+
+  useEffect(
+    function () {
+      async function a() {
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${KEY}&i=${selectId}`
+        );
+
+        const data = await res.json();
+        setMovie(data);
+
+        console.log(selectId);
+      }
+      a();
+    },
+    [selectId]
+  );
+
+  return (
+    <div className="details">
+      <header>
+        <img src={poster} alt={title} />
+
+        <div className="details-overview">
+          <h2>{title}</h2>
+          <p>
+            {released} &bull; {runtime}
+          </p>
+          <p>{genre}</p>
+          <p>
+            <span>⭐️</span>
+            {imdbRating} IMDb rating
+          </p>
+        </div>
+      </header>
+    </div>
+  );
 }
 
 function FilmWatchedList({ moviesWatched, onSelect, onDelete }) {
