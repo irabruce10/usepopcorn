@@ -96,8 +96,11 @@ export default function App() {
         </Box>
 
         <Box>
-          <Details selectId={selectId} />
-          <FilmWatchedList moviesWatched={moviesWatched} />
+          {selectId ? (
+            <Details selectId={selectId} />
+          ) : (
+            <FilmWatchedList moviesWatched={moviesWatched} />
+          )}
         </Box>
       </Main>
     </div>
@@ -169,7 +172,7 @@ function FilmList({ movies, onSelectId }) {
 }
 function Film({ movie, onSelectId }) {
   return (
-    <li onClick={() => onSelectId(movie)}>
+    <li onClick={() => onSelectId(movie.imdbID)}>
       <img src={movie.Poster} alt={movie.Title} />
       <h3>{movie.Title}</h3>
       <div>
@@ -200,17 +203,17 @@ function Details({ selectId }) {
 
   useEffect(
     function () {
-      async function a() {
+      async function getMovieDetails() {
         const res = await fetch(
           `http://www.omdbapi.com/?apikey=${KEY}&i=${selectId}`
         );
 
         const data = await res.json();
         setMovie(data);
-
         console.log(selectId);
       }
-      a();
+
+      getMovieDetails();
     },
     [selectId]
   );

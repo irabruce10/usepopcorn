@@ -331,6 +331,7 @@ function MovieDetails({ selectId, onCloseMovie, onAddMovie, watched }) {
     onAddMovie(newWatchedMovie);
     onCloseMovie();
   }
+  
   useEffect(
     function () {
       async function getMovieDetails() {
